@@ -1,6 +1,6 @@
 from parser import ParseData
 from collector import CollectOutput
-from confg import ReadConfig
+from config import ReadConfig
 import threading, time
 
 config = ReadConfig("my_config.yaml")
