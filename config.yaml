@@ -1,0 +1,34 @@
+host:
+  srv-1:
+    ip: "10.0.0.1"
+    user: "pi-data"
+    command: "/usr/local/bin/pi-data-collect.sh"
+    port: 22
+    key: "keys/some_key_ed25519" # Can be a shared or different key per device
+  srv-2:
+    ip: "10.0.0.2"
+    user: "pi-data"
+    command: "/usr/local/bin/pi-data-collect.sh"
+    port: 22
+    key: "keys/pi_key_ed25519"
+  srv-3:
+    ip: "10.0.0.3"
+    user: "pi-data"
+    command: "/usr/local/bin/pi-data-collect.sh"
+    port: 22
+    key: "keys/pi_key_ed25519"
+
+collector:
+  enabled: true
+  ssh_timeout: 10
+  poll_interval: 60
+  print_output: false
+
+mqtt:
+  enabled: false
+  discovery: false
+  print_output: true
+  host: "ip"
+  port: 1111
+  user: "mqtt-user"
+  pass: "**********"
