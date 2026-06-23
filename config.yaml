@@ -26,8 +26,10 @@ collector:
 
 mqtt:
   enabled: false
+  print_output: false
   discovery: false
-  print_output: true
+  discovery_prefix: "homeassistant"
+  app_prefix: "pi-data"
   host: "ip"
   port: 1111
   user: "mqtt-user"

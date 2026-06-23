@@ -1,5 +1,6 @@
 from parser import ParseData
 from collector import CollectOutput
+from mqtt import MqttClient
 from config import ReadConfig
 import threading, time
 
@@ -11,13 +12,19 @@ for host_name, option in config.hosts.items():
     obj.print_output = config.collector_print_output
     host_objects.append(obj)
 
+mqtt = MqttClient(config.mqtt_config)
+
+# mqtt.connect()
+# time.sleep(3)
+# mqtt.disconnect()
+
 def run_cycle():
     
     try:
-        print("----------------------------------------------------------------------------------------------------")
+        print("-------------- Collection Cycle: Start -----------------")
         for host in host_objects:
             
-            print(f"\nCollecting from -> Host: [{host.host}]")
+            print(f"Collecting from -> Host: [{host.host}]")
             data = host.run_collection()
             
             contents = []
@@ -39,7 +46,11 @@ def run_cycle():
                 output["host_name"] = host.host_name
                 output["host"] = host.host
                 output["online"] = host.online
-            print(output)
+            
+            print(mqtt.generate_discovery_data(output))
+            #print(output)
+        
+        print("-------------- Collection Cycle: Complete --------------\n")
     
     finally:
         schedule_next()
@@ -50,8 +61,11 @@ def schedule_next():
     timer.daemon = True
     timer.start()
 
-run_cycle()
 
+
+
+#Program start
+run_cycle()
 try:
     while True:
         time.sleep(1)

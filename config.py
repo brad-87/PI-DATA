@@ -10,9 +10,14 @@ class ReadConfig():
         self.collector_poll_interval = None
         self.collector_print_output = None
 
+        self.mqtt_config = None
         self.mqtt_en = None
-        self.mqtt_discovery = None
         self.mqtt_print_output = None
+        self.mqtt_discovery = None
+        self.mqtt_discovery_prefix = None
+        self.mqtt_app_prefix = None
+        self.mqtt_discovery = None
+        self.mqtt_discovery = None
         self.mqtt_server_ip = None
         self.mqtt_server_port = None
         self.mqtt_server_user = None
@@ -33,6 +38,9 @@ class ReadConfig():
 
 
     def parse_config(self):
+        r_collector = {}
+        r_mqtt = {}
+        
         for heading, contents in self.config.items():
             if heading == "host":
                 for host_name, host_config in contents.items():
@@ -47,7 +55,8 @@ class ReadConfig():
 
             else:
                 print(f"Config Warning: Ignoring unrelated section - [ {heading} ]")
-        
+
+
         for entity in r_collector:
             if entity == "enanled":
                 self.collector_en = r_collector[entity]
@@ -61,12 +70,16 @@ class ReadConfig():
                 continue
 
         for entity in r_mqtt:
-            if entity == "enanled":
+            if entity == "enabled":
                 self.mqtt_en = r_mqtt[entity]
-            elif entity == "discovery":
-                self.mqtt_discovery = r_mqtt[entity]
             elif entity == "print_output":
                 self.mqtt_print_output = r_mqtt[entity]
+            elif entity == "discovery":
+                self.mqtt_discovery = r_mqtt[entity]
+            elif entity == "discovery_prefix":
+                self.mqtt_discovery_prefix = r_mqtt[entity]
+            elif entity == "app_prefix":
+                self.mqtt_app_prefix = r_mqtt[entity]
             elif entity == "host":
                 self.mqtt_server_ip = r_mqtt[entity]
             elif entity == "port":
@@ -77,6 +90,7 @@ class ReadConfig():
                 self.mqtt_server_pass = r_mqtt[entity]
             else:
                 continue
+        self.mqtt_config = r_mqtt
 
 
     def print_config(self):

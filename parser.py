@@ -41,6 +41,8 @@ class ParseData():
 
         # CPU_TEMP
         self.cpu_temp = ""
+        
+        self.online = "offline"
 
     ## DATA ENTRY POINT
     def parse_data(self, raw_data):

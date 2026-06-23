@@ -10,7 +10,7 @@ class CollectOutput():
         self.key = r_key
         self.command = r_command
         self.print_output = False
-        self.online = False
+        self.online = "offline"
 
         if self.print_output:
             print(f"{self.host}@{datetime.now()}: Host object created")
@@ -36,8 +36,8 @@ class CollectOutput():
 
             # Check for clean command exec
             if exit_code !=0:
+                self.online = "offline"
                 raise RuntimeError(f"\n\nCommand failed with exit code {exit_code}: {error.strip()}\n\n")
-                self.online = False
 
             if error.strip():
                 print(f"Warning from server: {error.strip()}")
@@ -45,24 +45,24 @@ class CollectOutput():
             if output:
                 if self.print_output:
                     print(f"{self.host}@{datetime.now()}: Data Collected")
-                self.online = True
+                self.online = "online"
                 return output
             else:
-                self.online = False
+                self.online = "offline"
                 return 0
         
         except TimeoutError:
             print(f"{self.host}@{datetime.now()}: Timeout Error on host")
-            self.online = False
+            self.online = "offline"
             return None
         
         except paramiko.ssh_exception.AuthenticationException:
-            self.online = False
+            self.online = "offline"
             print(f"{self.host}@{datetime.now()}: Authentication Error")
             return None
         
         except paramiko.ssh_exception.SSHException as e:
-            self.online = False
+            self.online = "offline"
             print(f"{self.host}@{datetime.now()}: SSH Error: {e}")
             return None
                 
