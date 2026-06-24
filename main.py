@@ -4,6 +4,7 @@ from mqtt import MqttClient
 from config import ReadConfig
 import threading, time
 
+print("Program Init")
 config = ReadConfig()
 
 host_objects = []
@@ -15,7 +16,6 @@ for host_name, option in config.hosts.items():
 mqtt = MqttClient(config.mqtt_config)
 
 
-
 if config.mqtt_en:
     mqtt.connect()
 
@@ -25,6 +25,8 @@ if config.mqtt_discovery:
 
 if config.mqtt_print_output:
     mqtt.print_output = True
+
+print("Begin Main()")
 
 def run_cycle():
     global run_once
