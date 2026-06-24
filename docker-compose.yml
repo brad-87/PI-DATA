@@ -2,7 +2,23 @@ services:
   pi-data:
     build: .
     container_name: pi-data
-    restart: unless-stopped
+    restart: "no"
     volumes:
       - /opt/pi-data/config.yaml:/app/config.yaml:ro
       - /opt/pi-data/keys:/app/keys:ro
+    command: >
+      sh -c "
+      echo '=== PI-DATA DEBUG START ===';
+      echo 'Current folder:';
+      pwd;
+      echo 'App files:';
+      ls -la /app;
+      echo 'Config file:';
+      ls -l /app/config.yaml;
+      echo 'Keys folder:';
+      ls -la /app/keys;
+      echo 'Python version:';
+      python --version;
+      echo 'Container will now sleep for 5 minutes';
+      sleep 300
+      "
