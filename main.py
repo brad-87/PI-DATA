@@ -15,6 +15,7 @@ for host_name, option in config.hosts.items():
 mqtt = MqttClient(config.mqtt_config)
 
 
+
 if config.mqtt_en:
     mqtt.connect()
 
