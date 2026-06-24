@@ -4,5 +4,5 @@ services:
     container_name: pi-data
     restart: unless-stopped
     volumes:
-      - ./config.yaml:/app/config.yaml:ro
-      - ./keys:/app/keys:ro
+      - /opt/pi-data/config.yaml:/app/config.yaml:ro
+      - /opt/pi-data/keys:/app/keys:ro
