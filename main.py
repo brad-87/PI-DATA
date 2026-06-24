@@ -4,7 +4,7 @@ from mqtt import MqttClient
 from config import ReadConfig
 import threading, time
 
-config = ReadConfig("my_config.yaml")
+config = ReadConfig()
 
 host_objects = []
 for host_name, option in config.hosts.items():
