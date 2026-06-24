@@ -8,17 +8,11 @@ services:
       - /opt/pi-data/keys:/app/keys:ro
     command: >
       sh -c "
-      echo '=== PI-DATA DEBUG START ===';
-      echo 'Current folder:';
-      pwd;
-      echo 'App files:';
-      ls -la /app;
-      echo 'Config file:';
-      ls -l /app/config.yaml;
-      echo 'Keys folder:';
-      ls -la /app/keys;
-      echo 'Python version:';
-      python --version;
-      echo 'Container will now sleep for 5 minutes';
+      echo '=== PI-DATA PYTHON START ===';
+      echo 'Running main.py...';
+      python -u main.py;
+      EXIT_CODE=$$?;
+      echo '=== PYTHON EXITED WITH CODE:' $$EXIT_CODE '===';
+      echo 'Container sleeping for 5 minutes so logs stay visible...';
       sleep 300
       "
