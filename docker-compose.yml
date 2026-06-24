@@ -2,17 +2,8 @@ services:
   pi-data:
     build: .
     container_name: pi-data
-    restart: "no"
+    restart: unless-stopped
     volumes:
       - /opt/pi-data/config.yaml:/app/config.yaml:ro
       - /opt/pi-data/keys:/app/keys:ro
-    command: >
-      sh -c "
-      echo '=== PI-DATA PYTHON START ===';
-      echo 'Running main.py...';
-      python -u main.py;
-      EXIT_CODE=$$?;
-      echo '=== PYTHON EXITED WITH CODE:' $$EXIT_CODE '===';
-      echo 'Container sleeping for 5 minutes so logs stay visible...';
-      sleep 300
-      "
+    command: python -u main.py
