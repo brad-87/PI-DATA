@@ -14,12 +14,19 @@ for host_name, option in config.hosts.items():
 
 mqtt = MqttClient(config.mqtt_config)
 
-# mqtt.connect()
-# time.sleep(3)
-# mqtt.disconnect()
+
+if config.mqtt_en:
+    mqtt.connect()
+
+run_once = False
+if config.mqtt_discovery:
+    run_once = True
+
+if config.mqtt_print_output:
+    mqtt.print_output = True
 
 def run_cycle():
-    
+    global run_once
     try:
         print("-------------- Collection Cycle: Start -----------------")
         for host in host_objects:
@@ -47,8 +54,17 @@ def run_cycle():
                 output["host"] = host.host
                 output["online"] = host.online
             
-            print(mqtt.generate_discovery_data(output))
-            #print(output)
+            if config.mqtt_en:
+                if run_once:
+                    mqtt.transmit(mqtt.generate_discovery_data(output))
+                mqtt.transmit(mqtt.generate_state_packet(output))
+                mqtt.transmit(mqtt.generate_availability_packet(output))
+        if run_once:
+            run_once = False
+
+
+
+
         
         print("-------------- Collection Cycle: Complete --------------\n")
     
@@ -72,3 +88,6 @@ try:
 
 except KeyboardInterrupt:
     print("\nKeyboard interrupt received. Exiting...")
+    
+    if config.mqtt_en:
+        mqtt.disconnect()

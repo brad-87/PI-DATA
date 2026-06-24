@@ -25,9 +25,9 @@ collector:
   print_output: false
 
 mqtt:
-  enabled: false
-  print_output: false
-  discovery: false
+  enabled: true
+  print_output: true
+  discovery: true
   discovery_prefix: "homeassistant"
   app_prefix: "pi-data"
   host: "ip"

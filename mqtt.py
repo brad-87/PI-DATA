@@ -122,6 +122,7 @@ class MqttClient():
     def __init__(self, mqtt_config):
         self.client = None
         self.config = mqtt_config
+        self.print_output = False
         
 
     def generate_discovery_data(self,dict_data):
@@ -206,34 +207,35 @@ class MqttClient():
             payload_json = json.dumps(data)
             discovery_dict[slug] = payload_json
 
+        if self.print_output:
+            print(f"##########\nDiscovery packet: {discovery_dict}")
+
         return discovery_dict
             
-        '''
-            Discovery example:
-            <discovery_prefix>/<component>/[node_id]/<object_id>/config
+    def generate_state_packet(self, dict_data):
+        config = self.config
+        packet = {}
 
-            homeassistant/sensor/pi-data/srv-docker_cpu_temp_deg/config
-            {
-                "name": "CPU Temp",
-                "unique_id": "pi_data_srv_docker_cpu_temp_deg",
-                "state_topic": "pi-data/srv-docker/state",
-                "value_template": "{{ value_json.cpu_temp_deg }}",
+        slug = f'{config["app_prefix"]}/{dict_data["hostname"]}/state'
+        payload_json = json.dumps(dict_data)
+        packet[slug] = payload_json
+        
+        if self.print_output:
+            print(f"##########\nState packet: {packet}")
 
-                "availability_topic": "pi-data/srv-docker/availability",
-                "payload_available": "online",
-                "payload_not_available": "offline",
+        return packet
 
-                "device": {
-                    "identifiers": ["pi_data_srv_docker"],
-                    "name": "srv-docker",
-                    "manufacturer": "PI-DATA",
-                    "model": "Linux Host"
-                }
-            }
-        '''    
+    def generate_availability_packet(self, dict_data):
+        config = self.config
+        packet = {}
 
-    def generate_packet_data(self):
-        pass
+        slug = f'{config["app_prefix"]}/{dict_data["hostname"]}/availability'
+        packet[slug] = dict_data["online"]
+        
+        if self.print_output:
+            print(f"##########\nAvailability packet: {packet}")
+
+        return packet
 
     def transmit(self, tx_dict):
         pass
